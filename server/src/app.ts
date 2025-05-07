@@ -1,11 +1,14 @@
 import express from "express";
 import env from "./utils/env"
 import dbConnect from "./config/db";
+import mainRouter from "./routes/indexRoutes"
 
 const app = express();
 
 dbConnect();
 
+
+app.use("/api",mainRouter)
 app.use((req, res) => {
     res.json({"msg":"server ftne vala hai jldo baag jaaye yha se"})
 })
