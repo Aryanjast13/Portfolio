@@ -1,23 +1,20 @@
 import zod from "zod";
-export const projectsDetail = zod.object({
-  tite: zod.string(),
-    description: zod.string(),
-  image_url:zod.string().url()
+export const projectsSchema = zod.object({
+  title: zod.string(),
+  description: zod.string(),
 });
 
-
-export const toolsDetail = zod.object({
-    title: zod.string(),
-    image_url:zod.string().url()
-})
+export const toolsSchema = zod.object({
+  title: zod.string(),
+});
 
 export const credinatlsForResgister = zod.object({
   name: zod.string(),
   emailId: zod.string().email(),
-  password:zod.string()
-})
-
+  password: zod.string(),
+});
 
 export const credinatlsForLogin = zod.object({
-  
-})
+  emailId: zod.string().email(),
+  password: zod.string(),
+});

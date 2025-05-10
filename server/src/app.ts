@@ -4,6 +4,8 @@ import dbConnect from "./config/db";
 import mainRouter from "./routes/indexRoutes"
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 dbConnect();
 

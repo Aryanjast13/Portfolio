@@ -8,10 +8,14 @@ const toolsSchema = new mongoose.Schema({
     image_url: {
         type: String,
         require:true,
+    },
+    publicId: {
+        type: String,
+        require:true,
     }
 
 })
 
-const Tool = mongoose.model("Tools", toolsSchema);
+const ToolModel = mongoose.model("Tools", toolsSchema);
 
-export default Tool;
+export default ToolModel;
