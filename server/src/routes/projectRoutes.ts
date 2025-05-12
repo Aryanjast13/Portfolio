@@ -5,8 +5,8 @@ import {
   editProject,
   getProjects,
 } from "../controllers/projectControllers";
-import { uploads } from "../utils/muter";
 import authMiddleware from "../middlewares/authMiddleware";
+import { uploads } from "../utils/mutler";
 
 const router = express.Router();
 

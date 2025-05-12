@@ -1,7 +1,12 @@
 import express from "express";
-import { addTool, deleteTool, editTool, getTools } from "../controllers/toolsControllers";
-import { uploads } from "../utils/muter";
+import {
+  addTool,
+  deleteTool,
+  editTool,
+  getTools,
+} from "../controllers/toolsControllers";
 import authMiddleware from "../middlewares/authMiddleware";
+import { uploads } from "../utils/mutler";
 
 const router = express.Router();
 
