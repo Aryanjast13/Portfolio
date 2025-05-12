@@ -1,12 +1,24 @@
+import { Route, Routes } from "react-router";
+import Home from "./pages/Home.tsx/Home";
+import Projects from "./pages/Projects/Projects";
+import { Tools } from "./pages/Tools/Tools";
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import Layout from "./components/layouts/Layout";
 
 function App() {
- 
-
   return (
-    <>
-     <h1 className="bg-red-100 text-5xl" >helloo</h1>
-    </>
-  )
+    <Routes>
+      <Route path="register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+
+      <Route element={<Layout/>}>
+        <Route path="/" element={<Home />} />
+        <Route path="projects" element={<Projects />} />
+        <Route path="Tools" element={<Tools />} />
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
