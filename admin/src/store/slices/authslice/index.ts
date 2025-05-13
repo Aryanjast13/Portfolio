@@ -1,4 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const fetchData = createAsyncThunk("auth/login", async (data: { email: string, password: string }) => {
+  try {
+    const response = await axios.post("");
+    
+  } catch (error) {
+    
+  }
+
+})
+
+
+
+
 
 
 
@@ -17,20 +32,17 @@ interface authState {
 };
   
 
-
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     
   },
+  extraReducers:(builder) => {
+    builder.addCase(, reducer)
+  },
 })
 
-
-
-
-export 
 
 
 export default authSlice;
