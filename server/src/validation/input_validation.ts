@@ -10,11 +10,11 @@ export const toolsSchema = zod.object({
 
 export const credinatlsForResgister = zod.object({
   name: zod.string(),
-  emailId: zod.string().email(),
+  email: zod.string().email(),
   password: zod.string(),
 });
 
 export const credinatlsForLogin = zod.object({
-  emailId: zod.string().email(),
+  email: zod.string().email(),
   password: zod.string(),
 });

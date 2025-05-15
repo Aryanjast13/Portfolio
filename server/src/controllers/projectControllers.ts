@@ -15,10 +15,11 @@ const addProject: RequestHandler = async (req: Request, res: Response) => {
 
 
     if (!projectsSchema.safeParse(req.body).success) {
-        res.status(StatusCodes.BadRequest).json({ success: false, message: "Invalid request body" });
-        return;
-        }
-        console.log(projectsSchema.safeParse(req.body).data);
+      res
+        .status(StatusCodes.BadRequest)
+        .json({ success: false, message: "Invalid request body" });
+      return;
+    }
     if (!req.file) {
         res.status(StatusCodes.BadRequest).json({ success: false, message: "Invaild request body" });
         return;

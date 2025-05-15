@@ -25,8 +25,8 @@ export const generate__acceson_token = (user: any)=>{
 
 export const access_tokenOptions: CookieOptions = {
 	httpOnly: true,
-	secure: process.env.NODE_ENV === "production",
-	sameSite: (process.env.NODE_ENV === "production" ? "none" : "lax") as
+	secure: env.NODE_ENV === "production",
+	sameSite: (env.NODE_ENV === "production" ? "none" : "lax") as
 		| "lax"
 		| "none",
 	maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms

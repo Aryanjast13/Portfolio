@@ -12,10 +12,10 @@ export interface CustomRequest extends Request {
 }
 
 
-const authMiddleware: RequestHandler = async (req: CustomRequest, res: Response, next: NextFunction) => {
+const authMiddleware: RequestHandler = async (req:CustomRequest, res: Response, next: NextFunction) => {
     
-   
-        const token = req.cookies.access_token;
+    const token = req.cookies?.access_token;
+    
        
         if (!token) {
             res.status(StatusCodes.Unauthorized).json({ success: false, message: "Unauthorized : No token provided" });
@@ -35,7 +35,7 @@ const authMiddleware: RequestHandler = async (req: CustomRequest, res: Response,
         }
         
         req.user = decoded.user
-
+           next()
         
     } catch (error) {
         res.status(StatusCodes.InternalServerError).json({ success: false, message: "Unauthorized: Token verification failed" });
