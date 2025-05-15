@@ -7,6 +7,8 @@ const Projects = () => {
 
   const handleFormToggle = () => {
     setIsFormOpen(true);
+
+    
   };
 
   return (

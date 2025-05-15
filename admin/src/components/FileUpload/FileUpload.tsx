@@ -69,6 +69,7 @@ const FileUpload: React.FC<ImageUploadProps> = ({
         <Input
           type="file"
           id="image-upload"
+          name="image"
           className="hidden"
           onChange={handleImageUpload}
           accept="image/*"

@@ -1,12 +1,9 @@
+import apiInstance from "@/utils/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export const checkAuth = createAsyncThunk("auth/check-auth", async () => {
   try {
-    const response = await axios.get(
-      "http://localhost:4000/api/auth/get-session",
-      { withCredentials: true }
-    );
+    const response = await apiInstance.get("/auth/get-session");
     return response.data;
   } catch (error) {
     throw new Error("some error occurs");
@@ -17,14 +14,10 @@ export const login = createAsyncThunk(
   "auth/login",
   async (data: { email: string; password: string }) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
-        {
-          email: data.email,
-          password: data.password,
-        },
-        { withCredentials: true }
-      );
+      const response = await apiInstance.post("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
       return response.data;
     } catch (error: any) {
       return error.response.data;
@@ -34,9 +27,7 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   try {
-    const response = await axios.post("http://localhost:4000/api/auth/logout", {
-      withCredentials: true,
-    });
+    const response = await apiInstance.post("/auth/logout");
     return response.data;
   } catch (error: any) {
     return error.response.data;
@@ -109,7 +100,5 @@ export const authSlice = createSlice({
     });
   },
 });
-
-
 
 export default authSlice;

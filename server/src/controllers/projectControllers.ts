@@ -8,37 +8,42 @@ import { projectsSchema } from "../validation/input_validation";
 
 const addProject: RequestHandler = async (req: Request, res: Response) => {
     try {
-        
-  
-        const { title, description } = req.body;
-       
-
-
-    if (!projectsSchema.safeParse(req.body).success) {
-      res
-        .status(StatusCodes.BadRequest)
-        .json({ success: false, message: "Invalid request body" });
-      return;
-    }
-    if (!req.file) {
-        res.status(StatusCodes.BadRequest).json({ success: false, message: "Invaild request body" });
+      const { title, description } = req.body;
+      if (!projectsSchema.safeParse(req.body).success) {
+        res
+          .status(StatusCodes.BadRequest)
+          .json({ success: false, message: "Invalid request body" });
+        return;
+      }
+      if (!req.file) {
+        res
+          .status(StatusCodes.BadRequest)
+          .json({ success: false, message: "Invaild request body" });
         return;
       }
       const buffer = req?.file?.buffer as Buffer;
 
-        const result = await uploadToCloudinary(buffer)
-        const image_url = result.secure_url;
-        const publicId = result.public_id;
+      const result = await uploadToCloudinary(buffer);
+      const image_url = result.secure_url;
+      const publicId = result.public_id;
 
-        const projectdata = await ProjectModel.create({ title, description ,image_url,publicId});
-       
-        
-        if (!projectdata.title === title) {
-            res.status(StatusCodes.BadRequest).json({ success: false, message: "data is not stored" });
-            return;
-        }
+      const projectdata = await ProjectModel.create({
+        title,
+        description,
+        image_url,
+        publicId,
+      });
 
-        res.status(StatusCodes.OK).json({ message: "uploaded", data:projectdata });
+      if (!projectdata.title === title) {
+        res
+          .status(StatusCodes.BadRequest)
+          .json({ success: false, message: "data is not stored" });
+        return;
+      }
+
+      res
+        .status(StatusCodes.OK)
+        .json({ message: "uploaded", data: projectdata });
     } catch (error) {
         res.status(StatusCodes.InternalServerError).json({ success: false, message: "upload failed" });   
     }

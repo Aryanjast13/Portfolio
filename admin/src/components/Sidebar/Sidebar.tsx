@@ -6,17 +6,16 @@ import {
   ChevronLast,
   LogOut
 } from "lucide-react";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 
 export function Sidebar({ children }: any) {
   const expanded = useAppSelector((store) => store.sidebar.expanded);
-  const { user } = useAppSelector(store => store.auth) ;
+  const { user }: any = useAppSelector((store) => store.auth);
 
   const dispatch = useAppDispatch();
   const handleLogout = () => {
-    dispatch(logout())
-  }
-  
+    dispatch(logout());
+  };
 
   return (
     <aside className="h-full">
@@ -36,7 +35,9 @@ export function Sidebar({ children }: any) {
             className={`
                 flex  items-center
                 overflow-hidden transition-all ${
-                  expanded ? "w-52 ml-3 justify-between" : "w-full justify-center "
+                  expanded
+                    ? "w-52 ml-3 justify-between"
+                    : "w-full justify-center "
                 }
             `}
           >
@@ -58,21 +59,23 @@ export function Sidebar({ children }: any) {
   );
 }
 
-export function SidebarItem({ icon, text, active, alert }: any) {
+export function SidebarItem({ icon, text, alert }: any) {
   const expanded = useAppSelector((store) => store.sidebar.expanded);
 
   return (
-    <Link to={text == "Home" ? "/" : text}>
+    <NavLink
+      to={text == "Home" ? "/" : text}
+      className={({ isActive }) =>
+        isActive
+          ? "bg-gray-400 text-gray-200 w-full"
+          : "hover:bg-gray-600 text-slate-600"
+      }
+    >
       <li
         className={`
           relative flex items-center py-2 px-2 my-1
           font-medium rounded-md cursor-pointer
           transition-colors group
-          ${
-            active
-              ? "bg-gradient-to-tr from-gray-400 to-gray-600 text-gray-800"
-              : "hover:bg-gradient-to-tr from-gray-300 to-gray-500 text-slate-600"
-          }
       `}
       >
         {icon}
@@ -94,8 +97,8 @@ export function SidebarItem({ icon, text, active, alert }: any) {
         {!expanded && (
           <div
             className={`
-            absolute left-full rounded-md px-2 py-1 ml-6
-            bg-indigo-100 text-indigo-800 text-sm
+            absolute left-full rounded-md px-2 py-1 ml-3
+            bg-gradient-to-tr from-gray-300 to-gray-500  text-slate-700 text-sm
             invisible opacity-20 -translate-x-3 transition-all
             group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
         `}
@@ -104,6 +107,6 @@ export function SidebarItem({ icon, text, active, alert }: any) {
           </div>
         )}
       </li>
-    </Link>
+    </NavLink>
   );
 }
