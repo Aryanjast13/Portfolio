@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAppDispatch } from "@/store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
 import { addProject } from "@/store/slices/projectSlice";
 import React, { useState } from "react";
 
@@ -19,13 +19,18 @@ interface FormData {
 }
 
 export function AddForm({ isFormOpen, setIsFormOpen }: any) {
+  const { title, description } = useAppSelector((store) => store.project);
+  console.log(title,description);
   const dispatch = useAppDispatch();
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [editFormData, setEditFormData] = useState<FormData>({
+    title: title,
+    description: description,
+  });
   const [formData, setFromData] = useState<FormData>({
     title: "",
     description: "",
   });
-  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,17 +43,20 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
     console.log(imageFile);
 
     const data = new FormData();
-    data.append("image",imageFile)
+    data.append("image", imageFile);
     data.append("title", formData?.title);
     data.append("description", formData?.description);
 
     console.log(data);
     dispatch(addProject(data));
+    setImageFile(null);
+    setFromData({ title: "", description: "" });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFromData((prev: any) => ({ ...prev, [name]: value }));
+    setEditFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -66,7 +74,7 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
               id="title"
               name="title"
               className="col-span-3 border-slate-700"
-              value={formData?.title}
+              value={editFormData.title ? editFormData.title : formData?.title}
               onChange={handleChange}
             />
           </div>
@@ -78,7 +86,11 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
               id="description"
               name="description"
               className="col-span-3 border-slate-700"
-              value={formData?.description}
+              value={
+                editFormData.description
+                  ? editFormData.description
+                  : formData?.description
+              }
               onChange={handleChange}
             />
           </div>

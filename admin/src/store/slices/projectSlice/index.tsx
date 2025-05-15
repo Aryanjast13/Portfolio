@@ -18,25 +18,26 @@ export const addProject = createAsyncThunk("addProject", async (data:any) => {
 
 export const getProject = createAsyncThunk("getProject", async () => {
   try {
-    const response = await apiInstance.get("/projects");
+    const response = await apiInstance.get("/project");
     return response.data;
   } catch (error) {
     throw new Error("some error occurs");
   }
 });
 
-export const editProject = createAsyncThunk("editProject", async () => {
+export const editProject = createAsyncThunk("editProject", async (data: any) => {
+  const { id } = data;
   try {
-    const response = await apiInstance.put("/projects");
+    const response = await apiInstance.put("/project/"+id);
     return response.data;
   } catch (error) {
     throw new Error("some error occurs");
   }
 });
 
-export const deleteProject = createAsyncThunk("deleteProject", async () => {
+export const deleteProject = createAsyncThunk("deleteProject", async (id:string) => {
   try {
-    const response = await apiInstance.delete("/projects");
+    const response = await apiInstance.delete("/project/"+id);
     return response.data;
   } catch (error) {
     throw new Error("some error occurs");
@@ -47,33 +48,45 @@ export const deleteProject = createAsyncThunk("deleteProject", async () => {
 
 // Define a type for the slice state
 interface projectState {
-  title: string;
-  description: string;
+  projects: [],
+  title: string,
+  description: string,
+  image_url:string,
 }
 
 // Define the initial state using that type
 const initialState: projectState = {
-    title: "",
-    description: "",
+  projects: [],
+  title: "",
+  description: "",
+  image_url:"",
 };
 
 
 export const projectSlice = createSlice({
   name: "project",
   initialState,
-    reducers: {
-        setState: (state, action) => {
-            state.title = action.payload;
-            state.description = action.payload;
-        },
-        removeState: (state) => {
-            state.title = "";
-            state.description = "";
-        }
+  reducers: {
+    setState: (state, action) => {
+      state.title = action.payload.title;
+      state.description = action.payload.description;
+      state.image_url = action.payload.image_url;
+    },
+    removeState: (state) => {
+      state.title = "";
+      state.description = "";
+      state.image_url = "";
+    }
   },
+  extraReducers: (builder) => {
+    builder.addCase(getProject.fulfilled, (state, action) => {
+      state.projects=action.payload.data
+    })
+  }
   
 });
 
+
 export const {setState,removeState } = projectSlice.actions;
 
-export default projectSlice;
+export default projectSlice.reducer;
