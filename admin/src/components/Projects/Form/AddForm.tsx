@@ -12,14 +12,13 @@ import { Label } from "@/components/ui/label";
 import { useAppDispatch } from "@/store/hooks/hooks";
 import { addProject } from "@/store/slices/projectSlice";
 import React, { useState } from "react";
-import { toast } from "sonner";
 
 
 
 export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormData}: any) {
    const dispatch = useAppDispatch();
   const [imageFile, setImageFile] = useState<File | null>(null);
- 
+  
 
   const handleSubmit =async  (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,20 +29,13 @@ export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormDa
 
     const data = new FormData();
     data.append("image", imageFile);
-    data.append("title", title);
-    data.append("description",description);
+    data.append("title", formData?.title);
+    data.append("description", formData?.description);
 
-    
-    const response = await dispatch(addProject(data)).unwrap();
-    if (response.success) {
-      setImageFile(null);
-      setFormData({ title: "", description: "" });
-      setIsFormOpen(false)
-      toast.success("project added succesfully");
-    }
-    
-  
-
+    console.log(data);
+    dispatch(addProject(data));
+    setImageFile(null);
+    setFormData({ title: "", description: "" });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +58,7 @@ export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormDa
               id="title"
               name="title"
               className="col-span-3 border-slate-700"
-              value={title}
+              value={formData?.title}
               onChange={handleChange}
             />
           </div>
@@ -78,9 +70,7 @@ export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormDa
               id="description"
               name="description"
               className="col-span-3 border-slate-700"
-              value={
-                description
-              }
+              value={formData?.description}
               onChange={handleChange}
             />
           </div>

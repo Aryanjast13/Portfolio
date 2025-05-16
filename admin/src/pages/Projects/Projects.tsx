@@ -5,18 +5,19 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
 import { getProject } from "@/store/slices/projectSlice";
 import { useEffect, useState } from "react";
 
+interface FormData {
+  title: string;
+  description: string;
+}
+
+
 const Projects = () => {
   const { projects } = useAppSelector((store) => store.project);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  interface FormData {
-    title: string;
-    description: string;
-  }
   const [formData, setFormData] = useState<FormData>({
-    title:"",
-    description:"",
-  });
-
+      title: "",
+      description: "",
+    });
   const dispatch = useAppDispatch();
 
   const handleFormToggle = () => {
@@ -36,8 +37,7 @@ const Projects = () => {
         <AddForm
           isFormOpen={isFormOpen}
           setIsFormOpen={setIsFormOpen}
-          title={formData.title}
-          description={formData.description}
+          formData={formData}
           setFormData={setFormData}
         />
       </div>
@@ -49,6 +49,8 @@ const Projects = () => {
           image_url={c?.image_url}
           id={c._id}
           setIsFormOpen={setIsFormOpen}
+          formData={formData}
+          setFormData={setFormData}
         />
       ))}
     </div>
