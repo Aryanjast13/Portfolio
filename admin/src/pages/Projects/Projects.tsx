@@ -8,6 +8,15 @@ import { useEffect, useState } from "react";
 const Projects = () => {
   const { projects } = useAppSelector((store) => store.project);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  interface FormData {
+    title: string;
+    description: string;
+  }
+  const [formData, setFormData] = useState<FormData>({
+    title:"",
+    description:"",
+  });
+
   const dispatch = useAppDispatch();
 
   const handleFormToggle = () => {
@@ -24,7 +33,13 @@ const Projects = () => {
         <Button variant={"darkSlate"} onClick={handleFormToggle}>
           add Project
         </Button>
-        <AddForm isFormOpen={isFormOpen} setIsFormOpen={setIsFormOpen} />
+        <AddForm
+          isFormOpen={isFormOpen}
+          setIsFormOpen={setIsFormOpen}
+          title={formData.title}
+          description={formData.description}
+          setFormData={setFormData}
+        />
       </div>
       {projects.map((c: any) => (
         <Card

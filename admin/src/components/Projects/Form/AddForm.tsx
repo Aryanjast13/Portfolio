@@ -9,54 +9,46 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
+import { useAppDispatch } from "@/store/hooks/hooks";
 import { addProject } from "@/store/slices/projectSlice";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
-interface FormData {
-  title: string;
-  description: string;
-}
 
-export function AddForm({ isFormOpen, setIsFormOpen }: any) {
-  const { title, description } = useAppSelector((store) => store.project);
-  console.log(title,description);
-  const dispatch = useAppDispatch();
+
+export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormData}: any) {
+   const dispatch = useAppDispatch();
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [editFormData, setEditFormData] = useState<FormData>({
-    title: title,
-    description: description,
-  });
-  const [formData, setFromData] = useState<FormData>({
-    title: "",
-    description: "",
-  });
+ 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit =async  (e: React.FormEvent) => {
     e.preventDefault();
     if (!imageFile) {
       alert("Please select a file to upload");
       return;
     }
-    console.log(formData.title);
-    console.log(formData.description);
-    console.log(imageFile);
 
     const data = new FormData();
     data.append("image", imageFile);
-    data.append("title", formData?.title);
-    data.append("description", formData?.description);
+    data.append("title", title);
+    data.append("description",description);
 
-    console.log(data);
-    dispatch(addProject(data));
-    setImageFile(null);
-    setFromData({ title: "", description: "" });
+    
+    const response = await dispatch(addProject(data)).unwrap();
+    if (response.success) {
+      setImageFile(null);
+      setFormData({ title: "", description: "" });
+      setIsFormOpen(false)
+      toast.success("project added succesfully");
+    }
+    
+  
+
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFromData((prev: any) => ({ ...prev, [name]: value }));
-    setEditFormData((prev: any) => ({ ...prev, [name]: value }));
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -74,7 +66,7 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
               id="title"
               name="title"
               className="col-span-3 border-slate-700"
-              value={editFormData.title ? editFormData.title : formData?.title}
+              value={title}
               onChange={handleChange}
             />
           </div>
@@ -87,9 +79,7 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
               name="description"
               className="col-span-3 border-slate-700"
               value={
-                editFormData.description
-                  ? editFormData.description
-                  : formData?.description
+                description
               }
               onChange={handleChange}
             />

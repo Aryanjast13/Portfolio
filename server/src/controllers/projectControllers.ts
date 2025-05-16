@@ -43,7 +43,7 @@ const addProject: RequestHandler = async (req: Request, res: Response) => {
 
       res
         .status(StatusCodes.OK)
-        .json({ message: "uploaded", data: projectdata });
+        .json({ success:true,message: "uploaded successfully", data: projectdata });
     } catch (error) {
         res.status(StatusCodes.InternalServerError).json({ success: false, message: "upload failed" });   
     }

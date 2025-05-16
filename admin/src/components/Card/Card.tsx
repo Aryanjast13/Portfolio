@@ -16,13 +16,15 @@ const Card = ({ title, description, image_url, id, setIsFormOpen }: any) => {
   };
 
   return (
-    <div className="w-48 h-fit border  rounded-lg shadow-sm bg-[#161A30] border-gray-700 p-2">
-      <img className="rounded-md" src={image_url} alt="" />
+    <div className="w-48 h-fit border   rounded-lg shadow-sm bg-[#161A30] border-gray-700 p-2">
+      <img className="rounded-md w-44" src={image_url} alt="" />
 
-      <div className="p-2">
-        <h1 className="mb-1 text-[.8rem] text-white">{title}</h1>
+      <div className="p-2  ">
+        <h1 className="mb-1 text-[.8rem] text-white break-words">{title}</h1>
 
-        <p className="text-[.6rem] font-normal text-gray-400">{description}</p>
+        <p className="text-[.6rem] font-normal text-gray-400 break-words">
+          {description}
+        </p>
       </div>
       <div className="flex justify-end gap-2 px-2">
         <Button size={"card"} variant={"edit"} onClick={handleEdit}>
