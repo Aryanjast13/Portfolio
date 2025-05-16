@@ -2,25 +2,18 @@ import Card from "@/components/Card/Card";
 import { AddForm } from "@/components/Projects/Form/AddForm";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
-import { getProject } from "@/store/slices/projectSlice";
+import { getProject, removeState } from "@/store/slices/projectSlice";
 import { useEffect, useState } from "react";
-
-interface FormData {
-  title: string;
-  description: string;
-}
 
 
 const Projects = () => {
   const { projects } = useAppSelector((store) => store.project);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormData>({
-      title: "",
-      description: "",
-    });
+
   const dispatch = useAppDispatch();
 
   const handleFormToggle = () => {
+    dispatch(removeState());
     setIsFormOpen(true);
   };
 
@@ -37,8 +30,6 @@ const Projects = () => {
         <AddForm
           isFormOpen={isFormOpen}
           setIsFormOpen={setIsFormOpen}
-          formData={formData}
-          setFormData={setFormData}
         />
       </div>
       {projects.map((c: any) => (
@@ -49,8 +40,6 @@ const Projects = () => {
           image_url={c?.image_url}
           id={c._id}
           setIsFormOpen={setIsFormOpen}
-          formData={formData}
-          setFormData={setFormData}
         />
       ))}
     </div>

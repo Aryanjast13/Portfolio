@@ -48,18 +48,24 @@ export const deleteProject = createAsyncThunk("deleteProject", async (id:string)
 
 // Define a type for the slice state
 interface projectState {
-  projects: [],
-  title: string,
-  description: string,
-  image_url:string,
+  projects: [];
+  formData: {
+    title: string;
+    description: string;
+    image_url: string;
+  };
+  imageFile : File |null;
 }
 
 // Define the initial state using that type
 const initialState: projectState = {
   projects: [],
-  title: "",
-  description: "",
-  image_url:"",
+  formData: {
+    title: "",
+    description: "",
+    image_url: "",
+  },
+  imageFile: null,
 };
 
 
@@ -68,14 +74,17 @@ export const projectSlice = createSlice({
   initialState,
   reducers: {
     setState: (state, action) => {
-      state.title = action.payload.title;
-      state.description = action.payload.description;
-      state.image_url = action.payload.image_url;
+      state.formData=action.payload
+        console.log(action.payload);
+    },
+    setImageFile: (state, action) => {
+      state.imageFile=action.payload
     },
     removeState: (state) => {
-      state.title = "";
-      state.description = "";
-      state.image_url = "";
+      state.formData.title = "";
+      state.formData.description = "";
+      state.formData.image_url = "";
+      
     }
   },
   extraReducers: (builder) => {
@@ -87,6 +96,6 @@ export const projectSlice = createSlice({
 });
 
 
-export const {setState,removeState } = projectSlice.actions;
+export const {setState,removeState,setImageFile } = projectSlice.actions;
 
 export default projectSlice.reducer;

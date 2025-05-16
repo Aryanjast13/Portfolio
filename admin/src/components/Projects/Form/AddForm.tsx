@@ -9,15 +9,17 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAppDispatch } from "@/store/hooks/hooks";
-import { addProject } from "@/store/slices/projectSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
+import { addProject, removeState, setImageFile, setState } from "@/store/slices/projectSlice";
 import React, { useState } from "react";
 
 
 
-export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormData}: any) {
+export function AddForm({ isFormOpen, setIsFormOpen }: any) {
+  const {imageFile} = useAppSelector(store=>store.project)
+  const {formData} = useAppSelector(store=>store.project)
    const dispatch = useAppDispatch();
-  const [imageFile, setImageFile] = useState<File | null>(null);
+ 
   
 
   const handleSubmit =async  (e: React.FormEvent) => {
@@ -26,21 +28,27 @@ export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormDa
       alert("Please select a file to upload");
       return;
     }
-
+    
     const data = new FormData();
     data.append("image", imageFile);
-    data.append("title", formData?.title);
-    data.append("description", formData?.description);
+    data.append("title",formData.title);
+    data.append("description",formData.description);
 
     console.log(data);
     dispatch(addProject(data));
-    setImageFile(null);
-    setFormData({ title: "", description: "" });
+    dispatch(setImageFile(null));
+    dispatch(removeState());
+    
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev: any) => ({ ...prev, [name]: value }));
+    dispatch(
+      setState ({
+        ...formData,
+        [name]: value,
+      })
+    );
   };
 
   return (
@@ -58,7 +66,7 @@ export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormDa
               id="title"
               name="title"
               className="col-span-3 border-slate-700"
-              value={formData?.title}
+              value={formData.title}
               onChange={handleChange}
             />
           </div>
@@ -70,13 +78,13 @@ export function AddForm({ isFormOpen, setIsFormOpen,title ,description,setFormDa
               id="description"
               name="description"
               className="col-span-3 border-slate-700"
-              value={formData?.description}
+              value={formData.description}
               onChange={handleChange}
             />
           </div>
         </div>
         <div>
-          <FileUpload imageFile={imageFile} setImageFile={setImageFile} />
+          <FileUpload />
         </div>
 
         <DialogFooter>

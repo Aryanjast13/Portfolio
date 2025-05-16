@@ -1,30 +1,29 @@
+import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
 import { UploadCloud, X } from "lucide-react";
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { setImageFile } from "@/store/slices/projectSlice";
 
 export type UploadedImage = {
   url: string;
   public_id: string;
 };
 
-type ImageUploadProps = {
-  setImageFile: React.Dispatch<React.SetStateAction<File | null>>;
-  imageFile: File | null;
-};
 
-const FileUpload: React.FC<ImageUploadProps> = ({
-  setImageFile,
-  imageFile,
-}) => {
+const FileUpload = () => {
+  const {imageFile} = useAppSelector(store=>store.project)
+  const { formData } = useAppSelector((store) => store.project);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const dispatch = useAppDispatch()
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImageFile(file);
+      dispatch(setImageFile(file))
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
@@ -37,29 +36,27 @@ const FileUpload: React.FC<ImageUploadProps> = ({
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
-      setImageFile(file);
+       dispatch(setImageFile(file))
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
-
 
   return (
     <div className="mx-auto mt-4 w-full max-w-md">
       <div className="flex justify-between">
         <Label className="my-4 block font-semibold">Upload Image</Label>
- 
-          <Button
-            variant="ghost"
-            className="cursor-pointer p-0 hover:bg-transparent "
-            onClick={() => {
-              setImageFile(null);
-              setPreviewUrl(null);
-            }}
-          >
-            <X className="size-5 text-red-500" />
-            <span className="sr-only">Remove image</span>
-          </Button>
-       
+
+        <Button
+          variant="ghost"
+          className="cursor-pointer p-0 hover:bg-transparent "
+          onClick={() => {
+            dispatch(setImageFile(null));
+            setPreviewUrl(null);
+          }}
+        >
+          <X className="size-5 text-red-500" />
+          <span className="sr-only">Remove image</span>
+        </Button>
       </div>
       <div
         className="border-muted-foreground/50 rounded-md border-2 border-dashed"
@@ -75,7 +72,7 @@ const FileUpload: React.FC<ImageUploadProps> = ({
           accept="image/*"
           ref={inputRef}
         />
-        {!imageFile ? (
+        {!imageFile && !formData.image_url ? (
           <Label
             htmlFor="image-upload"
             className="flex h-32 cursor-pointer flex-col items-center justify-center rounded-md"
@@ -91,9 +88,17 @@ const FileUpload: React.FC<ImageUploadProps> = ({
               <img
                 src={previewUrl}
                 alt="Preview"
-                className="max-h-40 w-full   rounded-md object-cover"
+                className="w-full max-h-40 rounded-md object-cover"
               />
             )}
+
+            {formData.image_url ? (
+              <img
+                src={formData.image_url}
+                alt="Uploaded"
+                className="w-full max-h-40 rounded-md object-cover"
+              />
+            ) : null}
           </div>
         )}
       </div>

@@ -3,12 +3,18 @@ import { deleteProject, setState, } from "@/store/slices/projectSlice";
 import { Button } from "../ui/button";
 
 
-const Card = ({ title, description, image_url, id, setIsFormOpen }: any) => {
+const Card = ({
+  title,
+  description,
+  image_url,
+  id,
+  setIsFormOpen,
+}: any) => {
   const dispatch = useAppDispatch();
 
-    const handleEdit = () => {
-        setIsFormOpen(true)
-        dispatch(setState({ title, description ,image_url}))
+  const handleEdit = () => {
+    setIsFormOpen(true);
+    dispatch(setState({ title, description, image_url }));
   };
 
   const handleDelete = () => {
