@@ -4,26 +4,23 @@ import React, { useRef } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { setImageFile } from "@/store/slices/projectSlice";
 
 export type UploadedImage = {
   url: string;
   public_id: string;
 };
 
-
-const FileUpload = () => {
-  const {imageFile} = useAppSelector(store=>store.project)
+const FileUpload = ({ imageFile, setImageFile }: any) => {
   const { formData } = useAppSelector((store) => store.project);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      dispatch(setImageFile(file))
+      setImageFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
@@ -36,7 +33,7 @@ const FileUpload = () => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
-       dispatch(setImageFile(file))
+      setImageFile(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
@@ -72,7 +69,7 @@ const FileUpload = () => {
           accept="image/*"
           ref={inputRef}
         />
-        {!imageFile && !formData.image_url ? (
+        {!imageFile ? (
           <Label
             htmlFor="image-upload"
             className="flex h-32 cursor-pointer flex-col items-center justify-center rounded-md"
@@ -91,14 +88,6 @@ const FileUpload = () => {
                 className="w-full max-h-40 rounded-md object-cover"
               />
             )}
-
-            {formData.image_url ? (
-              <img
-                src={formData.image_url}
-                alt="Uploaded"
-                className="w-full max-h-40 rounded-md object-cover"
-              />
-            ) : null}
           </div>
         )}
       </div>

@@ -10,41 +10,94 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
-import { addProject, removeState, setImageFile, setState } from "@/store/slices/projectSlice";
+import {
+  addProject,
+  editProject,
+  removeState,
+  setState,
+} from "@/store/slices/projectSlice";
+import { Description } from "@radix-ui/react-dialog";
+import { Loader } from "lucide-react";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
+export function AddForm({
+  isFormOpen,
+  setIsFormOpen,
+  imageFile,
+  setImageFile,
+  edit,
+  setEditing,
+}: any) {
+  const { formData } = useAppSelector((store) => store.project);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
-
-export function AddForm({ isFormOpen, setIsFormOpen }: any) {
-  const {imageFile} = useAppSelector(store=>store.project)
-  const {formData} = useAppSelector(store=>store.project)
-   const dispatch = useAppDispatch();
- 
-  
-
-  const handleSubmit =async  (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!imageFile) {
       alert("Please select a file to upload");
       return;
     }
-    
-    const data = new FormData();
-    data.append("image", imageFile);
-    data.append("title",formData.title);
-    data.append("description",formData.description);
+    setIsLoading(true);
+    try {
+      const data = new FormData();
+      data.append("image", imageFile);
+      data.append("title", formData.title);
+      data.append("description", formData.description);
 
-    console.log(data);
-    dispatch(addProject(data));
-    dispatch(setImageFile(null));
-    dispatch(removeState());
-    
+      if (formData.title.length > 3 && formData.description.length > 3) {
+        const { success } = await dispatch(addProject(data)).unwrap();
+        if (success) {
+          toast.success("project added successfully");
+          dispatch(removeState());
+          setImageFile(null);
+          setIsFormOpen(false);
+        }
+      } else {
+        alert("please add the title and description ");
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  console.log(formData.id);
+  const handleEditSumbit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+    try {
+      const data = new FormData();
+      data.append("id", formData.id);
+      data.append("image", imageFile);
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+
+      if (formData.title.length > 3 && formData.description.length > 3) {
+        const { success } = await dispatch(editProject(data)).unwrap();
+        if (success) {
+          toast.success("project edited successfully");
+          dispatch(removeState());
+          setImageFile(null);
+          setIsFormOpen(false);
+        }
+      } else {
+        alert("please add the title and description ");
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     dispatch(
-      setState ({
+      setState({
         ...formData,
         [name]: value,
       })
@@ -57,6 +110,9 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
         <DialogHeader>
           <DialogTitle>Add Project</DialogTitle>
         </DialogHeader>
+        <Description className="sr-only">
+          Add title and description and image
+        </Description>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right">
@@ -84,12 +140,24 @@ export function AddForm({ isFormOpen, setIsFormOpen }: any) {
           </div>
         </div>
         <div>
-          <FileUpload />
+          <FileUpload imageFile={imageFile} setImageFile={setImageFile} />
         </div>
 
         <DialogFooter>
-          <Button variant={"darkSlate"} type="submit" onClick={handleSubmit}>
-            Add Project
+          <Button
+            variant={"darkSlate"}
+            type="submit"
+            onClick={edit ? handleEditSumbit : handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader className="animate-spin" />
+                <span>{edit ? "editing..." : "adding..."}</span>
+              </>
+            ) : (
+              <span>{edit ? "edit Project" : "add Project"}</span>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -9,10 +9,13 @@ import { useEffect, useState } from "react";
 const Projects = () => {
   const { projects } = useAppSelector((store) => store.project);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [edit, setEditing] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
   const handleFormToggle = () => {
+    setEditing(false);
     dispatch(removeState());
     setIsFormOpen(true);
   };
@@ -30,6 +33,10 @@ const Projects = () => {
         <AddForm
           isFormOpen={isFormOpen}
           setIsFormOpen={setIsFormOpen}
+          imageFile={imageFile}
+          setImageFile={setImageFile}
+          edit={edit}
+          setEditing={setEditing}
         />
       </div>
       {projects.map((c: any) => (
@@ -40,6 +47,9 @@ const Projects = () => {
           image_url={c?.image_url}
           id={c._id}
           setIsFormOpen={setIsFormOpen}
+          setEditing={setEditing}
+          imageFile={imageFile}
+          setImageFile={setImageFile}
         />
       ))}
     </div>
