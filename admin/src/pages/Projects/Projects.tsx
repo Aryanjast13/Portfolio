@@ -48,8 +48,6 @@ const Projects = () => {
           id={c._id}
           setIsFormOpen={setIsFormOpen}
           setEditing={setEditing}
-          imageFile={imageFile}
-          setImageFile={setImageFile}
         />
       ))}
     </div>

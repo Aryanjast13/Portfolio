@@ -29,7 +29,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         icon: "size-9",
-        card: "py-[.3rem] px-3 rounded-md text-[.8rem] font-normal",
+        card: "py-[.3rem] px-3 rounded-md text-[1rem] font-normal",
       },
     },
     defaultVariants: {

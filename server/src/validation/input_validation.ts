@@ -5,7 +5,7 @@ export const projectsSchema = zod.object({
 });
 
 export const toolsSchema = zod.object({
-  title: zod.string().min(3),
+  name: zod.string().min(1),
 });
 
 export const credinatlsForResgister = zod.object({

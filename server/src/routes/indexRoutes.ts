@@ -6,7 +6,7 @@ import toolRouter from "./toolsRoutes"
 const router = express.Router();
 
 router.use("/auth", authRouter);
-router.use("/tools", toolRouter);
+router.use("/tool", toolRouter);
 router.use("/project", projectRouter);
 
 

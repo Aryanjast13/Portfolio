@@ -7,7 +7,7 @@ import { toolsSchema } from "../validation/input_validation";
 
 const addTool: RequestHandler = async (req:Request,res:Response) => {
     try {
-      const { title} = req.body;
+      const { name} = req.body;
 
       if (!toolsSchema.safeParse(req.body).success) {
         res
@@ -28,20 +28,20 @@ const addTool: RequestHandler = async (req:Request,res:Response) => {
       const image_url = result.secure_url;
       const publicId = result.public_id;
 
-      const projectdata = await ToolModel.create({
-        title,
+      const tooldata = await ToolModel.create({
+        name,
         image_url,
         publicId,
       });
 
-      if (!projectdata.title === title) {
+      if (!tooldata.name === name) {
         res
           .status(StatusCodes.BadRequest)
           .json({ success: false, message: "data is not stored" });
         return;
       }
 
-      res.status(StatusCodes.OK).json({ message: "uploaded", data: projectdata });
+      res.status(StatusCodes.OK).json({success:true ,message: "uploaded", data: tooldata });
     } catch (error) {
       res
         .status(StatusCodes.InternalServerError)
@@ -64,7 +64,7 @@ const getTools: RequestHandler = async (req: Request, res: Response) => {
 
 const editTool: RequestHandler = async (req: Request, res: Response) => {
     try {
-      const { title, } = req.body;
+      const { name } = req.body;
       const id = req.params.id;
 
       if (!toolsSchema.safeParse(req.body).success) {
@@ -78,22 +78,22 @@ const editTool: RequestHandler = async (req: Request, res: Response) => {
         const result = await uploadToCloudinary(buffer);
         const image_url = result.secure_url;
         const publicId = result.public_id;
-        const projectData = await ToolModel.findByIdAndUpdate(
+        const toolData = await ToolModel.findByIdAndUpdate(
           { _id: id },
-          { title,image_url, publicId },
+          { name,image_url, publicId },
           { returnDocument: "after" }
         );
-        res.status(StatusCodes.OK).json({ success: true, data: projectData });
+        res.status(StatusCodes.OK).json({ success: true, data: toolData });
         return;
       }
 
-      const projectData = await ToolModel.findByIdAndUpdate(
+      const toolData = await ToolModel.findByIdAndUpdate(
         { _id: id },
-        { title },
+        { name },
         { returnDocument: "after" }
       );
 
-      res.status(StatusCodes.OK).json({ success: true, data: projectData });
+      res.status(StatusCodes.OK).json({ success: true, data: toolData });
     } catch (error) {
       res.status(StatusCodes.InternalServerError).json({
         success: false,

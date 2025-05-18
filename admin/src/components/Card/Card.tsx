@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/store/hooks/hooks";
-import { deleteProject, setState, } from "@/store/slices/projectSlice";
+import { deleteProject, getProject, setState, } from "@/store/slices/projectSlice";
 import { Button } from "../ui/button";
 
 
@@ -19,21 +19,29 @@ const Card = ({
     setEditing(true);
   };
 
-  const handleDelete = () => {
-    dispatch(deleteProject(id));
+  const handleDelete = async () => {
+    const { success } = await dispatch(deleteProject(id)).unwrap();
+    if (success) {
+      dispatch(getProject());
+    }
+    
   };
   return (
-    <div className="w-48 h-fit border   rounded-lg shadow-sm bg-[#161A30] border-gray-700 p-2">
-      <img className="rounded-md w-44" src={image_url} alt="" />
+    <div className="w-56  h-80  border   rounded-lg shadow-sm bg-[#161A30] border-gray-700 p-2">
+      <img
+        className="rounded-md w-52 h-44 object-cover"
+        src={image_url}
+        alt=""
+      />
 
-      <div className="p-2  ">
-        <h1 className="mb-1 text-[.8rem] text-white break-words">{title}</h1>
+      <div className="p-2 pt-4  ">
+        <h1 className="mb-1 text-[1.2rem] text-white break-words">{title}</h1>
 
-        <p className="text-[.6rem] font-normal text-gray-400 break-words">
-          {description.slice(1, 4).trim()}
+        <p className="text-[.8rem] font-normal text-gray-400 break-words">
+          {description.slice(1, 40).trim()}
         </p>
       </div>
-      <div className="flex justify-end gap-2 px-2">
+      <div className="flex justify-center  gap-2 px-2 pt-2">
         <Button size={"card"} variant={"edit"} onClick={handleEdit}>
           Edit
         </Button>

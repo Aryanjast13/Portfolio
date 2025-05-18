@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const toolsSchema = new mongoose.Schema({
-    title: {
+    name: {
         type: String,
         require:true
     },

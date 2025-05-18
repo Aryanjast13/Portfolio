@@ -1,35 +1,29 @@
 import FileUpload from "@/components/FileUpload/FileUpload";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAppDispatch, useAppSelector } from "@/store/hooks/hooks";
-import {
-  addProject,
-  editProject,
-  getProject,
-  removeState,
-  setState,
-} from "@/store/slices/projectSlice";
+import { addTool, editTool, getTool, removeState, setState } from "@/store/slices/toolsSlice";
 import { Description } from "@radix-ui/react-dialog";
 import { Loader } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-export function AddForm({
+export function AddToolForm({
   isFormOpen,
   setIsFormOpen,
   imageFile,
   setImageFile,
   edit,
 }: any) {
-  const { formData } = useAppSelector((store) => store.project);
+  const { formData } = useAppSelector((store) => store.tool);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -43,20 +37,19 @@ export function AddForm({
     try {
       const data = new FormData();
       data.append("image", imageFile);
-      data.append("title", formData.title);
-      data.append("description", formData.description);
+      data.append("name", formData.name);
 
-      if (formData.title.length > 3 && formData.description.length > 3) {
-        const { success } = await dispatch(addProject(data)).unwrap();
+      if (formData.name.length > 1) {
+        const { success } = await dispatch(addTool(data)).unwrap();
         if (success) {
-          dispatch(getProject());
-          toast.success("project added successfully");
+          dispatch(getTool());
+          toast.success("tool added successfully");
           dispatch(removeState());
           setImageFile(null);
           setIsFormOpen(false);
         }
       } else {
-        alert("please add the title and description ");
+        alert("please add the name ");
       }
     } catch (err) {
       console.log(err);
@@ -73,20 +66,19 @@ export function AddForm({
       const data = new FormData();
       data.append("id", formData.id);
       data.append("image", imageFile);
-      data.append("title", formData.title);
-      data.append("description", formData.description);
+      data.append("name", formData.name);
 
-      if (formData.title.length > 3 && formData.description.length > 3) {
-        const { success } = await dispatch(editProject(data)).unwrap();
+      if (formData.name.length > 1) {
+        const { success } = await dispatch(editTool(data)).unwrap();
         if (success) {
-          dispatch(getProject());
-          toast.success("project edited successfully");
+          dispatch(getTool());
+          toast.success("Tool edited successfully");
           dispatch(removeState());
           setImageFile(null);
           setIsFormOpen(false);
         }
       } else {
-        alert("please add the title and description ");
+        alert("please add the name ");
       }
     } catch (err) {
       console.log(err);
@@ -110,33 +102,21 @@ export function AddForm({
     <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
       <DialogContent className="sm:max-w-[425px] bg-[#171821]/90 border-none text-white">
         <DialogHeader>
-          <DialogTitle>Add Project</DialogTitle>
+          <DialogTitle>Add Tool</DialogTitle>
         </DialogHeader>
         <Description className="sr-only">
-          Add title and description and image
+          Add name  and image
         </Description>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="title" className="text-right">
-              Title
+              name
             </Label>
             <Input
-              id="title"
-              name="title"
+              id="name"
+              name="name"
               className="col-span-3 border-slate-700"
-              value={formData.title}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
-            </Label>
-            <Input
-              id="description"
-              name="description"
-              className="col-span-3 border-slate-700"
-              value={formData.description}
+              value={formData.name}
               onChange={handleChange}
             />
           </div>
@@ -158,7 +138,7 @@ export function AddForm({
                 <span>{edit ? "editing..." : "adding..."}</span>
               </>
             ) : (
-              <span>{edit ? "edit Project" : "add Project"}</span>
+              <span>{edit ? "edit Tool" : "add Tool"}</span>
             )}
           </Button>
         </DialogFooter>
