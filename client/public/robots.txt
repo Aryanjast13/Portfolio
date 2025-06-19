@@ -1,0 +1,39 @@
+# SEO Optimized robots.txt
+
+User-agent: *
+Disallow: /admin/
+Disallow: /config/
+Disallow: /private/
+Disallow: /backups/
+Disallow: /database/
+Disallow: /temp/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /server-status
+Disallow: /api/
+
+# Prevent crawling of unnecessary file types
+Disallow: /*.php$
+Disallow: /*.sql$
+Disallow: /*.env$
+Disallow: /*.log$
+Disallow: /*.bak$
+Disallow: /*.zip$
+
+# Block query strings
+Disallow: /*?*
+
+# Block bad bots
+User-agent: GPTBot
+Disallow: /
+User-agent: ChatGPT-User
+Disallow: /
+User-agent: ClaudeBot
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: Bytespider
+Disallow: /
+
+# Provide sitemap location
+Sitemap: https://avijit07x.vercel.app/sitemap.xml
