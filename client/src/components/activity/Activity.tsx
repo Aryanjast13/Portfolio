@@ -20,7 +20,7 @@ const Activity = () => {
 					JSON.stringify({
 						op: 2,
 						d: {
-							subscribe_to_id: "486217717238726656",
+							subscribe_to_id: "1243461626544390164",
 						},
 					}),
 				);

@@ -19,7 +19,7 @@ const Home = () => {
 		<>
 			<ReactLenis root>
 				<div className="mx-auto h-full max-w-screen-2xl text-white">
-					<div className="3xl:h-[700px] relative z-50 h-svh max-h-svh min-h-svh w-full overflow-hidden bg-[#0a0915]">
+					<div className="3xl:h-[700px] relative z-50 h-svh max-h-svh min-h-svh w-full overflow-hidden bg-[#1a1825]">
 						<Navbar />
 						<Hero />
 					</div>
