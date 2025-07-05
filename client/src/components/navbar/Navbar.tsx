@@ -29,7 +29,7 @@ const Navbar = () => {
 	};
 	return (
 		<>
-			<nav className="fixed top-0 z-[150] mx-auto flex h-14 w-full max-w-screen-2xl items-center justify-between bg-[#0a0915] backdrop-blur-sm backdrop-filter lg:px-8">
+			<nav className="fixed top-0 z-[150] mx-auto flex h-14 w-full max-w-screen-2xl items-center justify-between backdrop-blur-sm backdrop-filter lg:px-8">
 				<button
 					onClick={() => setOpen(true)}
 					className="pr-3 hover:bg-transparent lg:hidden"
