@@ -16,7 +16,7 @@ const ProjectSkeleton: React.FC = () => {
 				  </div>
 		  
 				  {/* Skills badges skeleton */}
-				  <div className="flex flex-wrap gap-2">
+				  <div className="flex flex-wrap gap-2 rounded-lg">
 					<div className="h-5 w-20 bg-zinc-700 rounded-full animate-pulse"></div>
 					<div className="h-5 w-16 bg-zinc-700 rounded-full animate-pulse"></div>
 					<div className="h-5 w-18 bg-zinc-700 rounded-full animate-pulse"></div>
@@ -25,7 +25,7 @@ const ProjectSkeleton: React.FC = () => {
 				  </div>
 		  
 				  {/* Buttons skeleton */}
-				  <div className="flex flex-col sm:flex-row gap-2">
+				  <div className="flex flex-col sm:flex-row gap-2 rounded-xl">
 					<div className="flex-1 h-10 bg-zinc-700 rounded animate-pulse"></div>
 					<div className="flex-1 h-10 bg-zinc-700 rounded animate-pulse"></div>
 				  </div>
