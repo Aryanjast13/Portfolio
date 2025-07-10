@@ -7,7 +7,7 @@ type Props = {
 
 const ActiveCard: React.FC<Props> = ({ activity, duration }) => {
 	return (
-		<div className="flex w-fit justify-center gap-2.5 rounded-lg border border-white/[0.1] bg-[#0f132e] p-4 text-start text-sm font-medium text-white drop-shadow-md">
+		<div className="flex w-fit justify-center gap-2.5 rounded-lg border border-white/[0.1] bg-[##26233a] p-4 text-start text-sm font-medium text-white drop-shadow-md">
 			<div className="relative size-18">
 				<img
 					className="h-full w-full rounded-md"
