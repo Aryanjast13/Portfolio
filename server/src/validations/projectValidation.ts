@@ -18,7 +18,7 @@ const projectSchema = zod.object({
 	github_link: zod
 		.string()
 		.optional()
-		.default("https://github.com/Avijit07x?tab=repositories"),
+		.default("https://github.com/Aryanjast13?tab=repositories"),
 	live_link: zod.string().optional(),
 	tools: zod.array(tagSchema).nonempty("At least one tool is required"),
 	order: zod.number().optional().default(0),
